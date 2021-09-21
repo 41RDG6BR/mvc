@@ -7,6 +7,7 @@ const p = path.join(
     'cart.json'
 )
 
+//Adding a Cart Model
 module.exports = class Cart {
 
     static addProduct(id, productPrice) {
