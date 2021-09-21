@@ -1,6 +1,5 @@
 const fs = require('fs');
 const path = require('path');
-// const products = [];
 
 const p = path.join(
     path.dirname(process.mainModule.filename), 
