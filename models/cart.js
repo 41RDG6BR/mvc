@@ -7,9 +7,7 @@ const p = path.join(
     'cart.json'
 )
 
-//Adding a Cart Model
 module.exports = class Cart {
-
     static addProduct(id, productPrice) {
         fs.readFile(p, (err, fileContent) => {
             let cart = {products: [], totalPrice: 0}
@@ -17,7 +15,9 @@ module.exports = class Cart {
                 cart = JSON.parse(fileContent)
             }
 
-            const existingProductIndex = cart.products.findIndex(prod => prod.id === id)
+            const existingProductIndex = cart.products.findIndex(
+                prod => prod.id === id
+            )
             
             const existingProduct = cart.products[existingProductIndex]
 
