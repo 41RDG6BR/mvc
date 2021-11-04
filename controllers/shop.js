@@ -58,7 +58,6 @@ exports.getCart = (req, res, next) => {
         .catch(err => console.log(err));
     })
     .catch(err => console.log(err))
-
 }
 
 exports.postCart = (req, res, next) => {
