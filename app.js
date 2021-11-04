@@ -22,12 +22,12 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use((req, res, next) => {
-    User.findByPk(1)
-      .then(user => {
-        req.user = user;
-        next();
-      })
-      .catch(err => console.log(err));
+  User.findByPk(1)
+    .then(user => {
+      req.user = user;
+      next();
+    })
+    .catch(err => console.log(err));
 })
 
 app.use('/admin', adminData.routes);
@@ -43,19 +43,22 @@ Cart.belongsToMany(Product, { through: CartItem });
 Product.belongsToMany(Cart, { through: CartItem });
 
 sequelize
-  .sync({ force: true }) 
+  .sync() 
   .then(result => {
     return User.findByPk(1);
     // console.log(result);
 })
   .then(user => {
       if(!user) {
-          User.create({ name: 'Rodrigo', email: 'teste@teste.com'});
+       return User.create({ name: 'Rodrigo Nogeuria', email: 'teste@testetestes.com' });
       }
       return user;
   })
   .then(user => {
       console.log(user);
+      return user.createCart();
+    })
+    .then(cart => {
       app.listen(3000);
   })
   .catch(err => {
