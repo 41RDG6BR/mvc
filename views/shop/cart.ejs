@@ -8,12 +8,14 @@
             <ul>
                 <% products.forEach(p =>  { %>
                     <li>
-                        <h1><%= p.title %></h1>
-                        <h2>Quantity: <%= p.cartItem.quantity %></h2>
+                        <% Object.keys(p).forEach(key => { %>
+                            <h1><%= p[key].productId.title %></h1>
+                        <h2>Quantity: <%= p[key].quantity %></h2>
                         <form action="/cart-delete-item" method="POST">
-                            <input type="hidden" value="<%= p.id %>" name="productId">
+                            <input type="hidden" value="<%= p[key].productId._id %>" name="productId">
                             <button class="btn" type="submit">Delete</button>
                         </form>
+                          <% }); %>
                     </li>
                 <% }) %>
             </ul>
@@ -28,3 +30,4 @@
         <% } %>
     </main>
     <%- include('../includes/end.ejs') %>
+</body>
