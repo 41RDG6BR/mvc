@@ -1,27 +1,25 @@
-const mongodb = require('mongodb');
-const MongoClient = mongodb.MongoClient;
+const mongoose = require('mongoose');
 
-let _db;
+const MONGODB_URI = 'mongodb+srv://rdg6design:@cluster0.opkyxl8.mongodb.net/';
 
-const mongoConnect = callback => {
-  MongoClient.connect('mongodb+srv://rdg6design:AQvxPH3VfFMhrSVT@cluster0.opkyxl8.mongodb.net/')
-    .then(client => {
-      console.log('Connected!')
-      _db = client.db();
-      callback(client)
-    })
-    .catch(err => {
-      console.log(err)
-      throw err;
-    })
-}
-
-const getDb = () => {
-  if(_db) {
-    return _db;
+const connectMongoDB = async () => {
+  try {
+    await mongoose.connect(MONGODB_URI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      useFindAndModify: false,
+      useCreateIndex: true,
+    });
+    console.log('Connected to MongoDB');
+  } catch (error) {
+    console.error('Error connecting to MongoDB:', error);
+    throw error;
   }
-  throw 'No database found';
-}
+};
 
-exports.mongoConnect = mongoConnect;
-exports.getDb = getDb;
+const getMongoDBConnection = () => mongoose.connection;
+
+module.exports = {
+  connectMongoDB,
+  getMongoDBConnection,
+};
