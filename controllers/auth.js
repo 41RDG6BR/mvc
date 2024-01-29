@@ -117,16 +117,17 @@ exports.postReset = (req, res, next) => {
       return user.save();
     })
     .then(result => {
-      res.redirect('/');
+      // res.redirect('/');
       transporter.sendMail({
         from: 'nogueirajsx@gmail.com',
         to: req.body.email,
         subject: 'You requested a password reset',
         html: `
-          <p>You requested a password reset</p>
-          <p>Click this <a href="http://localhost:3000/reset/${token}">Link</a>to set a new password.</p>
+        <p>You requested a password reset</p>
+        <p>Click this <a href="http://localhost:3000/reset/${token}">Link</a>to set a new password.</p>
         `,
       });
+      res.redirect('/');
     })
     .catch(err => {
       console.error(err);
