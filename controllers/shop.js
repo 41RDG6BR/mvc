@@ -33,12 +33,15 @@ exports.getProduct = (req, res, next) => {
 
 exports.getIndex = (req, res, next) => {
   Products.find().then(products => {
+    console.log('CSRF Token:', req.csrfToken());
     res.render('shop/index', {
       prods: products,
       pageTitle: 'Shop',
       path: '/',
-      isAuthenticated: req.isLoggedIn
+      isAuthenticated: req.isLoggedIn,
+      csrfToken: req.csrfToken()
     });
+    next()
   })
   .catch(err => {
     console.log(err)
