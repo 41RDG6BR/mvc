@@ -1,9 +1,5 @@
-const mongodb = require('mongodb');
-const Product = require('../models/product');
 const Products = require('../models/product');
-
-const ObjectId = mongodb.ObjectId;
-
+const Product = require('../models/product');
 exports.getAddProduct = (req, res, next) => {
   res.render('admin/edit-product', {
     pageTitle: 'Add Product',
@@ -66,17 +62,29 @@ exports.getEditProduct = (req, res, next) => {
 exports.postEditProduct = (req, res, next) => {
   const prodId = req.body.productId;
   const updatedTitle = req.body.title;
-  const updatedImageUrl = req.body.imageUrl;
   const updatedPrice = req.body.price;
   const updatedDesc = req.body.description;
-  const product = new Product(updatedTitle, updatedImageUrl, updatedPrice, updatedDesc, new ObjectId(prodId))
+  const updatedImageUrl = req.body.imageUrl;
+  
+  Product.findById(prodId)
+    .then(product => {
+      if (product.userId.toString() !== req.user_id.toString() && req.user_id !== undefined) {
+        return res.redirect('/');
+      } else {
+        console.log('A propriedade está definida.');
+      }
+
+      product.title= updatedTitle;  
+      product.price= updatedPrice;
+      product.description = updatedDesc;
+      product.imageUrl= updatedImageUrl; 
     
-  product
-    .save()
+      return product.save()
     .then(result => {
       console.log('UPDATED PRODUCT!')
       res.redirect('/admin/products');
     })
+  })
     .catch(err => console.log(err));
 };
 
